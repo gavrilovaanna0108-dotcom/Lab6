@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int year(int yeas);
-int calc(double x);
+double calc(double x);
 int mat(int n);
 
 int main()
@@ -10,38 +10,56 @@ int main()
     int n;
     int yeas;
 
-    scanf("%d", &yeas);
-    year(yeas);
+    if (scanf("%d", &yeas) == 1)
+    {
+        int is_leap = year(yeas);
+        if (is_leap)
+        {
+            printf("%d Високосный год\n", yeas);
+        }
+        else
+        {
+            printf("%d Не високосный год\n", yeas);
+        }
+    }
 
-    scanf("%lf", &x);
-    calc(x);
+    if (scanf("%lf", &x) == 1)
+    {
+        double res_calc = calc(x);
+        printf("F(x) = %.2f\n", res_calc);
+    }
 
-    scanf("%d", &n);
-    mat(n);
+    if (scanf("%d", &n) == 1)
+    {
+        int has_five = mat(n);
+        if (has_five)
+        {
+            printf("Цифра 5 входит в число\n");
+        }
+        else
+        {
+            printf("Не входит\n");
+        }
+    }
+
     return 0;
 }
 
 int year(int yeas)
 {
-    float c;
     /*
     input: 2018 output: "год 2018 не високосный"
     input: 1900 output: "год 1900 не високосный"
     input: 2020 output: "год 2020 високосный"
     */
-    c = yeas % 4;
-    if ((c == 0) && (yeas % 100 != 0) || (yeas % 400 == 0))
+    if ((yeas % 4 == 0 && yeas % 100 != 0) || (yeas % 400 == 0))
     {
-        printf("%d Високосный год\n", yeas);
-    }
-    else
-    {
-        printf("%d Не високосный год\n", yeas);
+        return 1;
     }
     return 0;
 }
 
-int calc(double x)
+double calc(double x)
 {
     /*
         1) x <= 7:
@@ -54,24 +72,30 @@ int calc(double x)
         Расчёт: F(9) = 1 / (9 - 7) = 1 / 2 = 0.5
         Вывод: x = 9.00, F(x) = 0.50
     */
-    printf("F(x) = %.2f\n", (x <= 7) ? (-3.0 * x + 9.0) : (1.0 / (x - 7.0)));
-    return 0;
+    if (x <= 7.0)
+    {
+        return -3.0 * x + 9.0;
+    }
+    else
+    {
+        return 1.0 / (x - 7.0);
+    }
 }
 
 int mat(int n)
 {
-    int units = n % 10;
-    int tens = (n / 10) % 10;
-    int hundreds = n / 100;
-
-    if (units == 5 || tens == 5 || hundreds == 5)
+    int temp = n < 0 ? -n : n;
+    if (temp == 0)
     {
-        printf("Цифра 5 входит в число");
+        return 0;
     }
-    else
+    while (temp > 0)
     {
-        printf("Не входит");
+        if (temp % 10 == 5)
+        {
+            return 1;
+        }
+        temp /= 10;
     }
-
     return 0;
 }
